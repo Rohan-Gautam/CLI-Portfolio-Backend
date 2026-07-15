@@ -1,10 +1,111 @@
 package app.rohangautam.cliportfolio.backend.service.impl;
 
-import app.rohangautam.cliportfolio.backend.dto.CliConfigResponse;
-import app.rohangautam.cliportfolio.backend.dto.ExperienceResponse;
-import app.rohangautam.cliportfolio.backend.dto.ProfileResponse;
-import app.rohangautam.cliportfolio.backend.dto.ProjectResponse;
-import app.rohangautam.cliportfolio.backend.dto.SkillResponse;
+/*
+  =============================================================================
+                              API SERVICE LAYER
+  =============================================================================
+
+  This file is the ONLY communication layer between the React frontend and the
+  Spring Boot backend.
+
+  Architecture
+  ------------
+  UI Components
+         │
+         ▼
+  useTerminal() / Hooks
+         │
+         ▼
+  apiService (THIS FILE)
+         │
+         ▼
+  Axios HTTP Client
+         │
+         ▼
+  Spring Boot REST Controllers
+
+
+  Every backend endpoint should have ONE matching function here.
+  Components should NEVER call axios directly.
+
+
+  =============================================================================
+  HOW TO ADD A NEW BACKEND FEATURE
+  =============================================================================
+
+  Example:
+
+  Spring Boot
+  -----------------------------------
+  @GetMapping("/api/achievements")
+ * public List<AchievementDto> getAchievements() { ... }
+ *
+ *
+ * Step 1. Create a TypeScript interface
+ *
+ * export interface AchievementResponse {
+ *   title: string;
+ *   year: string;
+ *   description: string;
+ * }
+ *
+ *
+ * Step 2. Add an optional cache
+ *
+ * let achievementsCache: AchievementResponse[] | null = null;
+ *
+ *
+ * Step 3. Create an API method
+ *
+ * getAchievements: async (): Promise<AchievementResponse[]> => {
+ *   if (achievementsCache) {
+ *     console.log("[API Cache] Serving achievements from memory.");
+ *     return achievementsCache;
+ *   }
+ *
+ *   console.log("[API Fetch] GET /api/achievements");
+ *
+ *   const response = await client.get<AchievementResponse[]>("/api/achievements");
+ *
+ *   achievementsCache = response.data;
+ *   return response.data;
+ * }
+ *
+ *
+ * Step 4. Call it anywhere
+ *
+ * const data = await apiService.getAchievements();
+ *
+ *
+ * =============================================================================
+ * WHY USE THIS PATTERN?
+ * =============================================================================
+ *
+ * ✓ One place to change API URLs.
+ * ✓ One place for authentication headers.
+ * ✓ One place for caching.
+ * ✓ Prevents duplicate HTTP requests.
+ * ✓ Keeps React components clean.
+ * ✓ Makes adding new backend controllers take only a few minutes.
+ *
+ *
+ * =============================================================================
+ * RULES
+ * =============================================================================
+ *
+ * • Never call axios from React components.
+ * • Every REST endpoint gets one function here.
+ * • Add interfaces in types.ts.
+ * • Cache read-only endpoints whenever possible.
+ * • Keep HTTP logic here and UI logic inside components/hooks.
+ *
+ * This file should grow alongside the backend. Whenever a new controller is
+ * created in Spring Boot, simply expose a new function here and the rest of
+ * the frontend can consume it through apiService.
+ * =============================================================================
+ */
+
+import app.rohangautam.cliportfolio.backend.dto.*;
 import app.rohangautam.cliportfolio.backend.service.PortfolioService;
 import org.springframework.stereotype.Service;
 
@@ -180,7 +281,39 @@ public class PortfolioServiceImpl implements PortfolioService {
                         new CliConfigResponse.ThemeInfo("dracula", "#282a36", "#f8f8f2", "#bd93f9"),
                         new CliConfigResponse.ThemeInfo("matrix", "#000000", "#00ff41", "#00ff41"),
                         new CliConfigResponse.ThemeInfo("solarized", "#002b36", "#839496", "#268bd2"),
-                        new CliConfigResponse.ThemeInfo("nord", "#2e3440", "#d8dee9", "#88c0d0")
+                        new CliConfigResponse.ThemeInfo("nord", "#2e3440", "#d8dee9", "#88c0d0"),
+
+                        // Modern Popular Themes
+                        new CliConfigResponse.ThemeInfo("tokyo-night", "#1a1b26", "#c0caf5", "#7aa2f7"),
+                        new CliConfigResponse.ThemeInfo("catppuccin", "#1e1e2e", "#cdd6f4", "#f5c2e7"),
+                        new CliConfigResponse.ThemeInfo("catppuccin-latte", "#eff1f5", "#4c4f69", "#dc8a78"),
+                        new CliConfigResponse.ThemeInfo("gruvbox", "#282828", "#ebdbb2", "#fabd2f"),
+                        new CliConfigResponse.ThemeInfo("one-dark", "#282c34", "#abb2bf", "#61afef"),
+                        new CliConfigResponse.ThemeInfo("github-dark", "#0d1117", "#c9d1d9", "#58a6ff"),
+                        new CliConfigResponse.ThemeInfo("github-light", "#ffffff", "#24292f", "#0969da"),
+                        new CliConfigResponse.ThemeInfo("rose-pine", "#191724", "#e0def4", "#eb6f92"),
+                        new CliConfigResponse.ThemeInfo("rose-pine-dawn", "#faf4ed", "#575279", "#d7827e"),
+                        new CliConfigResponse.ThemeInfo("everforest", "#2b3339", "#d3c6aa", "#a7c080"),
+                        new CliConfigResponse.ThemeInfo("kanagawa", "#1f1f28", "#dcd7ba", "#7e9cd8"),
+                        new CliConfigResponse.ThemeInfo("material-ocean", "#0f111a", "#c3cee3", "#82aaff"),
+
+                        // Retro CRT Themes
+                        new CliConfigResponse.ThemeInfo("amber", "#120c00", "#ffb000", "#ff9900"),
+                        new CliConfigResponse.ThemeInfo("phosphor", "#08140a", "#98fb98", "#00ff66"),
+                        new CliConfigResponse.ThemeInfo("terminal-green", "#001100", "#33ff33", "#00ff00"),
+                        new CliConfigResponse.ThemeInfo("dos", "#0000aa", "#ffffff", "#ffff55"),
+                        new CliConfigResponse.ThemeInfo("commodore64", "#40318d", "#a4a0ff", "#ffffff"),
+
+                        // Fun / Neon
+                        new CliConfigResponse.ThemeInfo("cyberpunk", "#0d0221", "#ff71ce", "#05ffa1"),
+                        new CliConfigResponse.ThemeInfo("synthwave", "#241b2f", "#f92aad", "#36f9f6"),
+                        new CliConfigResponse.ThemeInfo("outrun", "#1b1032", "#ff6ac1", "#00f5ff"),
+
+                        // Cute / Pastel
+                        new CliConfigResponse.ThemeInfo("pastel", "#fff7fb", "#5c5470", "#ff8fab"),
+                        new CliConfigResponse.ThemeInfo("strawberry-milk", "#fff0f5", "#6b4f4f", "#ff69b4"),
+                        new CliConfigResponse.ThemeInfo("mint", "#ecfff7", "#24524a", "#56c596"),
+                        new CliConfigResponse.ThemeInfo("lavender", "#f6f0ff", "#5b4b8a", "#9b7ede")
                 ),
                 List.of(
                         new CliConfigResponse.CommandInfo("whoami", "Show profile summary", "whoami"),
@@ -191,17 +324,13 @@ public class PortfolioServiceImpl implements PortfolioService {
                         new CliConfigResponse.CommandInfo("clear", "Clear the terminal", "clear"),
                         new CliConfigResponse.CommandInfo("help", "List available commands", "help")
                 ),
-                List.of(
-                        "Code is cheap, show me the deploy.",
-                        "Ship it, then fix it.",
-                        "Every bug is a lesson wearing a disguise."
-                ),
+                BootQuotes.QUOTES,
                 """
-                        ____       _
-                       |  _ \\ ___ | |__   __ _ _ __
-                       | |_) / _ \\| '_ \\ / _` | '_ \\
-                       |  _ < (_) | | | | (_| | | | |
-                       |_| \\_\\___/|_| |_|\\__,_|_| |_|
+                                                                                ____       _
+                                                                               |  _ \\ ___ | |__   __ _ _ __
+                                                                               | |_) / _ \\| '_ \\ / _` | '_ \\
+                                                                               |  _ < (_) | | | | (_| | | | |
+                                                                               |_| \\_\\___/|_| |_|\\__,_|_| |_|
                         """
         );
     }

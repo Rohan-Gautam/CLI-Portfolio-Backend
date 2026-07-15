@@ -15,7 +15,7 @@ public class DemoApplication {
 
     @GetMapping("/ping")
     public String ping() {
-        return "The server is working, WOW";
+        return "The server is working fine, WOW";
     }
 
 }
