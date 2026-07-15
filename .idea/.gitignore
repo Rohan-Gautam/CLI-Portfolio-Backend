@@ -1,0 +1,80 @@
+# =========================
+# IntelliJ IDEA
+# =========================
+.idea/
+*.iml
+out/
+
+# =========================
+# Gradle
+# =========================
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# =========================
+# Java
+# =========================
+*.class
+*.log
+*.ctxt
+*.jar
+*.war
+*.ear
+
+# Keep the Gradle wrapper JAR
+!gradle/wrapper/gradle-wrapper.jar
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# =========================
+# Environment Files
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Application Secrets
+# =========================
+application-local.properties
+application-local.yml
+application-dev.properties
+application-dev.yml
+application-prod.properties
+application-prod.yml
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# Temporary Files
+# =========================
+*.tmp
+*.swp
+*.swo
+*~
+
+# =========================
+# Maven (if ever used)
+# =========================
+target/
+
+# =========================
+# VS Code (optional)
+# =========================
+.vscode/
+
+# =========================
+# Generated Reports
+# =========================
+coverage/
+jacoco/
